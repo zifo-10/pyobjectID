@@ -30,7 +30,7 @@ jobs:
         python -m venv .venv
         source .venv/bin/activate
         pip install -r requirements.txt
-        pip install pytest unittest
+        pip install unittest==1.4.34
 
     # Run the unit tests
     - name: Run unit tests
