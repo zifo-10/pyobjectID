@@ -25,7 +25,7 @@
 You can install the package using pip:
 
 ```bash
-pip install pyobjectID
+pip install pyobjectid
 ```
 
 ## Installation from Source
