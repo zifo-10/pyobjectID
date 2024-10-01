@@ -1,0 +1,38 @@
+name: Run Unit Tests
+
+# Trigger the workflow on pushes and pull requests to the main branch
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Check out the repository
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Set up Python
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10' # or whatever version you are using
+
+    # Install dependencies
+    - name: Install dependencies
+      run: |
+        python -m venv .venv
+        source .venv/bin/activate
+        pip install -r requirements.txt
+
+    # Run the unit tests
+    - name: Run unit tests
+      run: |
+        source .venv/bin/activate
+        python -m unittest discover -s test
