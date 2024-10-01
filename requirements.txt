@@ -1,0 +1,3 @@
+bson==0.5.10
+setuptools==74.1.3
+pyobjectid==0.1.1
