@@ -1,6 +1,17 @@
 # PYOBJECTID
 
+![PyPI](https://img.shields.io/pypi/v/pyobjectID)
+
 `pyobjectID` is a Python package designed to simplify the generation, validation, and manipulation of MongoDB ObjectIds. Whether you're working with databases directly or integrating ObjectIds into your Pydantic models, this package provides a straightforward and efficient solution.
+
+## Table of Contents
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Basic Operations](#basic-operations)
+  - [Pydantic Integration](#pydantic-integration)
+- [Running Tests](#running-tests)
+- [Contributing](#contributing)
 
 ## Features
 
@@ -17,10 +28,20 @@ You can install the package using pip:
 pip install pyobjectID
 ```
 
-## Usage
+## Installation from Source
 
-Basic Operations
+To install from source, clone the repository and install the dependencies:
+```
+git clone https://github.com/yourusername/pyobjectID.git
+cd pyobjectID
+pip install .
+```
+
+## Usage
+### Basic Operations
+
 You can perform basic operations such as generating, validating, and converting ObjectIds:
+
 ```
 from pyobjectID import (generate, PyObjectId, 
                         MongoObjectId, is_valid)
@@ -42,10 +63,9 @@ mongo_object_id = MongoObjectId.to_string(py_object_id)
 print(f"MongoObjectId: {mongo_object_id}")
 ```
 
-## Pydantic Integration
+### Pydantic Integration
 
 This package can be used in Pydantic models to validate ObjectId fields from MongoDB. Here are examples of how to implement it:
-
 ```
 from pydantic import BaseModel
 from pyobjectID import PyObjectId, MongoObjectId
@@ -58,9 +78,23 @@ class User(BaseModel):
 class GetFromMongo(BaseModel):
     id: MongoObjectId  # Automatically validates and converts to string
 ```
-- In the User model, the id field will be validated as a valid ObjectId, and any string assigned to it will be converted to an ObjectId. 
+
+- In the User model, the id field will be validated as a valid ObjectId, and any string assigned to it will be converted to an ObjectId.
 - In the GetFromMongo model, the id field will be validated as a valid ObjectId and will be converted to a string.
 
+## Running Tests
+
+To run the unit tests for this project, use the following command:
+
+```
+python -m unittest discover -s test
+```
 
 ## Contributing
 Contributions are welcome! If you have suggestions or find bugs, please create an issue or submit a pull request.
+
+### Notes:
+```
+- Replace `yourusername` in the Git clone URL with your actual GitHub username.
+- Feel free to add or modify any sections based on your project's needs!
+```
