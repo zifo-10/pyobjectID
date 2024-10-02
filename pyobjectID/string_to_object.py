@@ -2,64 +2,68 @@ from bson import ObjectId
 from typing import Any
 from .errors import InvalidObjectIdError
 from .validate import is_valid
+from pydantic.json_schema import JsonSchemaMode
 
 
 class PyObjectId:
     """
-    Custom validator for Pydantic that converts a user-friendly string
-    representation into a MongoDB ObjectId.
+    A custom Pydantic field validator that handles MongoDB ObjectIds.
 
-    This validator is designed to ensure that input values conform to
-    the MongoDB ObjectId format. It raises appropriate exceptions for
-    invalid inputs, making it easier to work with ObjectIds in Pydantic
-    models.
+    This class enables seamless validation and conversion of ObjectId values
+    in Pydantic models, ensuring that ObjectIds are correctly handled in
+    both directions (to and from MongoDB).
+
+    Typical use case:
+        You can use `PyObjectId` in a Pydantic model to automatically validate
+        and convert string inputs to MongoDB ObjectId objects.
 
     Example usage:
-        You can use this validator in a Pydantic model as follows:
-
-        ```python
         from pydantic import BaseModel
+        from pyobjectID import PyObjectId
 
         class UserModel(BaseModel):
             id: PyObjectId
-        ```
 
-    Attributes:
-        None
+        user = UserModel(id="507f1f77bcf86cd799439011")
+
+    The above example will ensure that the `id` is validated as a valid ObjectId
+    before it's assigned to the model.
     """
 
     @classmethod
     def __get_validators__(cls):
         """
-        Get the validators for the PyObjectId class.
+        Return the Pydantic validators for this field.
+
+        This method is called by Pydantic to retrieve the sequence of
+        validation methods. It yields the `to_object` method, which is responsible
+        for validating and converting input values to MongoDB ObjectIds.
 
         Yields:
-            Generator: A generator that yields the conversion method
-            for validating input values as MongoDB ObjectIds.
+            A callable that performs the ObjectId conversion.
         """
         yield cls.to_object
 
     @classmethod
     def to_object(cls, value: Any, *args, **kwargs) -> ObjectId:
         """
-        Convert a given value into a MongoDB ObjectId.
+        Validate and convert a given value into a MongoDB ObjectId.
+
+        If the input value is already an instance of `ObjectId`, it is returned
+        as-is. Otherwise, the function attempts to convert a valid string
+        representation into an `ObjectId`.
 
         Args:
-            value (Any): The value to be converted, which can be a
-            string or an existing ObjectId.
+            value (Any): The input value to validate and convert. This can be
+            a string (typically the hexadecimal representation of an ObjectId)
+            or an existing `ObjectId` instance.
 
         Returns:
-            ObjectId: The converted ObjectId instance if the input is
-            valid.
+            ObjectId: A valid MongoDB `ObjectId` object.
 
         Raises:
-            InvalidObjectIdError: If the provided value is not a valid
-            ObjectId or if the conversion fails.
-
-        Example:
-            >>> obj_id = PyObjectId.to_object("507f1f77bcf86cd799439011")
-            >>> print(obj_id)
-            ObjectId('507f1f77bcf86cd799439011')
+            InvalidObjectIdError: Raised if the input is not a valid ObjectId
+            or cannot be converted to one.
         """
         if isinstance(value, ObjectId):
             return value
@@ -69,3 +73,25 @@ class PyObjectId:
             raise InvalidObjectIdError(value)
         except Exception:
             raise InvalidObjectIdError(value)
+
+    @classmethod
+    def __get_pydantic_json_schema__(cls, schema: JsonSchemaMode, *args) -> dict:
+        """
+        Define the custom JSON schema for PyObjectId.
+
+        This method returns a schema that tells Pydantic how to represent the
+        `PyObjectId` field in JSON schema outputs. It marks the field as a string
+        in JSON, with the format type `objectid`, allowing for more accurate
+        schema generation.
+
+        Args:
+            schema (JsonSchemaMode): The current schema mode for Pydantic.
+
+        Returns:
+            dict: A dictionary defining the JSON schema for `PyObjectId`.
+        """
+        return {
+            "type": "string",
+            "format": "objectid",
+            "example": "507f1f77bcf86cd799439011",
+        }
