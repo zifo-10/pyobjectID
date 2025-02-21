@@ -94,7 +94,6 @@ python -m unittest discover -s test
 Contributions are welcome! If you have suggestions or find bugs, please create an issue or submit a pull request.
 
 ### Notes:
-```
-- Replace `yourusername` in the Git clone URL with your actual GitHub username.
+``
 - Feel free to add or modify any sections based on your project's needs!
 ```
