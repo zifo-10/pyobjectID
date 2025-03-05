@@ -1,5 +1,7 @@
 from bson import ObjectId
 from typing import Any
+
+
 from .errors import InvalidObjectIdError
 from .validate import is_valid
 from pydantic.json_schema import JsonSchemaMode
@@ -45,7 +47,7 @@ class PyObjectId:
         yield cls.to_object
 
     @classmethod
-    def to_object(cls, value: Any, *args, **kwargs) -> ObjectId:
+    def to_object(cls, value: Any, *args, **kwargs) -> 'PyObjectId':
         """
         Validate and convert a given value into a MongoDB ObjectId.
 

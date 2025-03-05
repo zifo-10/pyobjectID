@@ -40,7 +40,7 @@ class MongoObjectId:
         yield cls.to_string
 
     @classmethod
-    def to_string(cls, value: Any, *args, **kwargs) -> str:
+    def to_string(cls, value: Any, *args, **kwargs) -> 'MongoObjectId':
         """
         Validate and convert a MongoDB ObjectId or string input into its string representation.
 

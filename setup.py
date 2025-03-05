@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='pyobjectid',
-    version='0.1.1',
+    version='0.1.4',
     packages=find_packages(),
     description='A package to generate, validate, and deal with MongoDB ObjectIds.',
     author='Zifo',

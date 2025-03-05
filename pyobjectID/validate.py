@@ -2,8 +2,10 @@ import datetime
 import re
 import time
 
+from bson import ObjectId
 
-def is_valid(object_id: str) -> bool:
+
+def is_valid(object_id: str | ObjectId) -> bool:
     """
     Validate if the given string is a valid MongoDB ObjectId.
 
